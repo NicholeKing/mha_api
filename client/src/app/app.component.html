@@ -1,0 +1,26 @@
+<head>    
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="jumbotron">
+      <h1>Welcome to MHA</h1>
+      <button *ngIf="!showAll" class="btn btn-danger" (click)="getAllHeroes()">Show Everyone</button>
+    </div>
+    <div class="row">
+      <div *ngFor="let person of people; index as i" class="col-5">
+        <h2>Real Name: {{person.real_name}}</h2>
+        <div *ngIf="!person.isVisible">
+          <button class="btn btn-danger" (click)="toggleView(i)">Show Details</button>
+        </div>
+        <div *ngIf="person.isVisible">
+          <h3>Alias: {{person.alias}}</h3>
+          <h3>Quirk: {{person.quirk}}</h3>
+          <h3>Status: {{person.status}}</h3>
+          <button class="btn btn-danger" (click)="toggleView(i)">Hide Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
