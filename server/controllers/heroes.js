@@ -2,6 +2,7 @@ console.log("Connected to heroes.js");
 
 const mongoose = require("mongoose");
 const Hero = mongoose.model('Hero');
+mongoose.set('useFindAndModify', false);
 
 class Heroes {
 	getHeroes(req, res){

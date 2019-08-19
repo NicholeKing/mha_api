@@ -1,26 +1,70 @@
-<head>    
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body>
-  <div class="container-fluid">
-    <div class="jumbotron">
-      <h1>Welcome to MHA</h1>
-      <button *ngIf="!showAll" class="btn btn-danger" (click)="getAllHeroes()">Show Everyone</button>
-    </div>
-    <div class="row">
-      <div *ngFor="let person of people; index as i" class="col-5">
-        <h2>Real Name: {{person.real_name}}</h2>
-        <div *ngIf="!person.isVisible">
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h1>Welcome to MHA</h1>
+    <button *ngIf="!showAll" class="btn btn-danger" (click)="getAllHeroes()">Show Everyone</button>
+  </div>
+  <div class="row">
+    <div *ngFor="let p of people; index as i" class="col-5">
+      <div *ngIf="!p.beingUpdated">
+        <h2>Real Name: {{p.real_name}}</h2>
+        <div *ngIf="!p.isVisible">
           <button class="btn btn-danger" (click)="toggleView(i)">Show Details</button>
         </div>
-        <div *ngIf="person.isVisible">
-          <h3>Alias: {{person.alias}}</h3>
-          <h3>Quirk: {{person.quirk}}</h3>
-          <h3>Status: {{person.status}}</h3>
+        <div *ngIf="p.isVisible">
+          <h3>Alias: {{p.alias}}</h3>
+          <h3>Quirk: {{p.quirk}}</h3>
+          <h3>Status: {{p.status}}</h3>
           <button class="btn btn-danger" (click)="toggleView(i)">Hide Details</button>
+          <button class="btn btn-danger" (click)="toggleUpdate(i)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteHero(p._id)">Delete</button>
         </div>
+      </div>
+      <div *ngIf="p.beingUpdated">
+        <form (submit)="updateHero(p._id)">
+          <div class="form-group">
+            <input class="form-control" type="text" name="upHero.real_name" [(ngModel)]="upHero.real_name" placeholder="Real Name">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="upHero.alias" [(ngModel)]="upHero.alias" [value]=p.alias placeholder="Alias">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="upHero.quirk" [(ngModel)]="upHero.quirk" [value]=p.quirk placeholder="Quirk">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="upHero.status" [(ngModel)]="upHero.status" [value]=p.status placeholder="Status">
+          </div>
+          <input style="margin-right: 10px;" class="btn btn-danger" type="submit" value="Update">
+          <button class="btn btn-danger" (click)="toggleUpdate(i)">Cancel</button>
+        </form>
       </div>
     </div>
   </div>
-</body>
+  <div class="col-8">
+    <h2>Add Someone</h2>
+    <form (submit)="addHero()">
+      <div class="row">
+        <div class="form-group col-6">
+          <label>Real Name:</label>
+          <input class="form-control" type="text" name="newHero.real_name" [(ngModel)]="newHero.real_name"/>
+        </div>
+        <div class="form-group col-6">
+          <label>Alias:</label>
+          <input class="form-control" type="text" name="newHero.alias" [(ngModel)]="newHero.alias"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label>Quirk:</label>
+          <input class="form-control" type="text" name="newHero.quirk" [(ngModel)]="newHero.quirk"/>
+        </div>
+        <div class="form-group col-6">
+          <label>Status:</label>
+          <input class="form-control" type="text" name="newHero.status" [(ngModel)]="newHero.status"/>
+        </div>
+      </div>
+      <input class="btn btn-danger" type="submit" value="Add Person">
+    </form> 
+  </div>
+</div>
+
 

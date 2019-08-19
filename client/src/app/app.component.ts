@@ -8,16 +8,14 @@ import { HttpService } from './http.service';
 })
 export class AppComponent implements OnInit {
   people: any = [];
-  person: any =[];
+  newHero: any;
+  upHero: any;
   showAll = false;
   constructor(private _httpService: HttpService) {}
 
   ngOnInit() {
-  }
-
-  toggleView(i){
-    console.log(i);
-    this.people[i].isVisible = !this.people[i].isVisible;
+    this.newHero = {real_name: "", alias: "", quirk: "", status: ""};
+    this.upHero = {real_name: "", alias: "", quirk: "", status: ""};
   }
 
   getAllHeroes() {
@@ -28,7 +26,48 @@ export class AppComponent implements OnInit {
   		this.people = data;
   		for (var i = 0; i < this.people.length; i++){
   			this.people[i].isVisible = false;
+        this.people[i].beingUpdated = false;
   		}
   	});
+  }
+
+  toggleView(i){
+    this.people[i].isVisible = !this.people[i].isVisible;
+  }
+  
+  toggleUpdate(i) {
+    this.people[i].beingUpdated = !this.people[i].beingUpdated;
+    this.upHero = this.people[i];
+    for (let k = 0; k < this.people.length; k++){
+      if (this.people[k] !== this.people[i]) {
+        this.people[k].beingUpdated = false;
+      }
+    }
+  }
+
+  deleteHero(_id) {
+    let her = this._httpService.delete(_id)
+    her.subscribe( data => {
+      console.log(data);
+      this.getAllHeroes();
+    })
+  }
+
+  addHero() {
+    let newH = this._httpService.create(this.newHero);
+    newH.subscribe( data => {
+      console.log(data);
+      this.ngOnInit();
+      this.getAllHeroes();
+    });
+  }
+
+  updateHero(_id){
+    let upH = this._httpService.update(_id, this.upHero);
+    upH.subscribe( data => {
+      console.log(data);
+      this.ngOnInit();
+      this.getAllHeroes();
+    });
   }
 }

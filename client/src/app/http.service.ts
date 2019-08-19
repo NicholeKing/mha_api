@@ -12,7 +12,15 @@ export class HttpService {
   	return this._http.get('/heroes');
   }
 
-  getOne() {
-  	return this._http.get('/heroes/:_id')
+  delete(_id) {
+  	return this._http.delete('heroes/' + _id);
+  }
+
+  create(data: object) {
+  	return this._http.post('/heroes', data);
+  }
+
+  update(_id, data: object){
+  	return this._http.put('/heroes/' + _id, data);
   }
 }
